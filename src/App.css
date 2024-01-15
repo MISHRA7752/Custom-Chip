@@ -1,0 +1,55 @@
+
+.chip-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  position: relative;
+  align-items: flex-start;
+}
+
+.chip {
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  margin: 2px;
+}
+
+.chip-remove {
+  cursor: pointer;
+  margin-left: 4px;
+  color: #555;
+}
+
+.input-container {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  flex-grow: 1;
+  min-height: 32px;
+}
+
+.dropdown {
+  position: absolute;
+  width: 500px;
+  max-height: 150px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  border-radius: 4px;
+  z-index: 1;
+}
+
+.dropdown-item {
+  padding: 8px;
+  cursor: pointer;
+}
