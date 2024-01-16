@@ -56,6 +56,7 @@ function App() {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
+    setClickedIn(true);
   };
 
   const handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -63,6 +64,7 @@ function App() {
       // Remove the last chip when backspace is pressed and input is empty
       const lastChip = chips[chips.length - 1];
       handleChipRemove(lastChip?.id);
+      setClickedIn(false);
     }
   };
 
