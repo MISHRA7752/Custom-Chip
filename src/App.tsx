@@ -13,7 +13,7 @@ interface IUserData {
 interface IChipData extends IUserData {
   id?: number;
 }
-const MainCon = styled.div<{ isFocued: boolean, id:string }>`
+const MainCon = styled.div<{ isFocued: boolean; id: string }>`
   display: flex;
   flex-wrap: wrap;
   gap: 2px;
@@ -29,7 +29,7 @@ function App() {
   const [filteredItems, setFilteredItems] = useState<IChipData[]>([]);
   const [isFocued, setisFocued] = useState(false);
   const [clickedIn, setClickedIn] = useState(false);
-  const [top, setTop] = useState<number|undefined>(66);
+  const [top, setTop] = useState<number | undefined>(66);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -46,11 +46,6 @@ function App() {
         (ele) => !chips.find((itm) => itm.email === ele.email)
       );
       setFilteredItems(filtItms);
-    }
-  }, [isFocued]);
-  useEffect(() => {
-    if (!isFocued) {
-      inputRef.current?.focus()
     }
   }, [isFocued]);
 
@@ -77,6 +72,9 @@ function App() {
 
     setChips([...chips, newChip]);
     setInputValue("");
+    setTimeout(() => {
+      inputRef.current?.focus();
+    }, 250);
   };
 
   const handleChipRemove = (chipId?: number) => {
@@ -92,18 +90,18 @@ function App() {
       setisFocued(false);
     }, 200);
   }
-  useEffect(()=>{
-    setTop(document.getElementById('maincon')?.offsetHeight)
-  },[chips.length])
-  function bubbleHandlerIn(){
-    setClickedIn(true)
+  useEffect(() => {
+    setTop(document.getElementById("maincon")?.offsetHeight);
+  }, [chips.length]);
+  function bubbleHandlerIn() {
+    setClickedIn(true);
   }
-  function bubbleHandlerOut(){
-    setClickedIn(false)
+  function bubbleHandlerOut() {
+    setClickedIn(false);
   }
   return (
     <>
-    <MainCon isFocued={isFocued} id="maincon" onClick={bubbleHandlerIn}>
+      <MainCon isFocued={isFocued} id="maincon" onClick={bubbleHandlerIn}>
         {chips.map((chip) => (
           <div key={chip.id} className="chip">
             <ChipCompont
@@ -119,29 +117,28 @@ function App() {
           style={{ border: "none", outline: "none" }}
           ref={inputRef}
           type="text"
-          placeholder="Click or type here for sugestions..."
+          placeholder="Click or Type here for sugestions..."
           value={inputValue}
           onChange={handleInputChange}
           onKeyDown={handleInputKeyDown}
           className="input"
         />
-      {(isFocued && clickedIn) && (
-        <div className="dropdown" style={{top:`${(top||0)+8}px`}}>
-          {filteredItems.map((item) => (
-            <DropDownChipCompont
-              key={item.id}
-              className="dropdown-item"
-              onClick={() => handleChipClick(item)}
-              leftText={item.name}
-              rightText={item.email}
-              imageUrl={item.img}
-            />
-          ))}
-        </div>
-      )}
-    </MainCon>
-    <div style={{height:'100%'}} onClick={bubbleHandlerOut}>
-    </div>
+        {isFocued && clickedIn && (
+          <div className="dropdown" style={{ top: `${(top || 0) + 8}px` }}>
+            {filteredItems.map((item) => (
+              <DropDownChipCompont
+                key={item.id}
+                className="dropdown-item"
+                onClick={() => handleChipClick(item)}
+                leftText={item.name}
+                rightText={item.email}
+                imageUrl={item.img}
+              />
+            ))}
+          </div>
+        )}
+      </MainCon>
+      <div style={{ height: "100%" }} onClick={bubbleHandlerOut}></div>
     </>
   );
 }
