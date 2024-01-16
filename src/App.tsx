@@ -28,6 +28,7 @@ function App() {
   const [chips, setChips] = useState<IChipData[]>([]);
   const [filteredItems, setFilteredItems] = useState<IChipData[]>([]);
   const [isFocued, setisFocued] = useState(false);
+  const [clickedIn, setClickedIn] = useState(false);
   const [top, setTop] = useState<number|undefined>(66);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -45,6 +46,11 @@ function App() {
         (ele) => !chips.find((itm) => itm.email === ele.email)
       );
       setFilteredItems(filtItms);
+    }
+  }, [isFocued]);
+  useEffect(() => {
+    if (!isFocued) {
+      inputRef.current?.focus()
     }
   }, [isFocued]);
 
@@ -69,7 +75,6 @@ function App() {
 
     setChips([...chips, newChip]);
     setInputValue("");
-    inputRef?.current?.focus();
   };
 
   const handleChipRemove = (chipId?: number) => {
@@ -78,20 +83,23 @@ function App() {
   };
 
   function haldleFocus() {
-    setTimeout(() => {
-      setisFocued(true);
-    }, 300);
+    setisFocued(true);
   }
   function handleBlur() {
-    setTimeout(() => {
-      setisFocued(false);
-    }, 200);
+    setisFocued(false);
   }
   useEffect(()=>{
     setTop(document.getElementById('maincon')?.offsetHeight)
   },[chips.length])
+  function bubbleHandlerIn(){
+    setClickedIn(true)
+  }
+  function bubbleHandlerOut(){
+    setClickedIn(false)
+  }
   return (
-    <MainCon isFocued={isFocued} id="maincon">
+    <>
+    <MainCon isFocued={isFocued} id="maincon" onClick={bubbleHandlerIn}>
         {chips.map((chip) => (
           <div key={chip.id} className="chip">
             <ChipCompont
@@ -113,7 +121,7 @@ function App() {
           onKeyDown={handleInputKeyDown}
           className="input"
         />
-      {isFocued && (
+      {(isFocued && clickedIn) && (
         <div className="dropdown" style={{top:`${(top||0)+8}px`}}>
           {filteredItems.map((item) => (
             <DropDownChipCompont
@@ -128,6 +136,9 @@ function App() {
         </div>
       )}
     </MainCon>
+    <div style={{height:'100%'}} onClick={bubbleHandlerOut}>
+    </div>
+    </>
   );
 }
 
