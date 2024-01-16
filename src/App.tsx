@@ -86,7 +86,9 @@ function App() {
     setisFocued(true);
   }
   function handleBlur() {
-    setisFocued(false);
+    setTimeout(() => {
+      setisFocued(false);
+    }, 200);
   }
   useEffect(()=>{
     setTop(document.getElementById('maincon')?.offsetHeight)
