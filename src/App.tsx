@@ -119,7 +119,7 @@ function App() {
           style={{ border: "none", outline: "none" }}
           ref={inputRef}
           type="text"
-          placeholder="Type here for sugestions..."
+          placeholder="Click or type here for sugestions..."
           value={inputValue}
           onChange={handleInputChange}
           onKeyDown={handleInputKeyDown}
