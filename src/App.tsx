@@ -30,8 +30,8 @@ function App() {
   const [isFocued, setisFocued] = useState(false);
   const [clickedIn, setClickedIn] = useState(false);
   const [top, setTop] = useState<number | undefined>(66);
+  const [active, setActive] = useState<number>(-1);
   const inputRef = useRef<HTMLInputElement>(null);
-
   useEffect(() => {
     const filteredIt = items.filter(
       (item) =>
@@ -47,7 +47,7 @@ function App() {
       );
       setFilteredItems(filtItms);
     }
-  }, [isFocued]);
+  }, [isFocued, chips.length]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -61,7 +61,33 @@ function App() {
       handleChipRemove(lastChip?.id);
       setClickedIn(false);
     }
+    if (event.keyCode == 38) {
+      // up arrow
+      setActive((prev) => {
+        if (prev > 0) return prev - 1;
+        return 0;
+      });
+    } else if (event.keyCode == 40) {
+      // down arrow
+      setActive((prev) => {
+        if (prev >= filteredItems.length - 1) return filteredItems.length - 1;
+        return prev + 1;
+      });
+    } else if (event.keyCode == 13) {
+      //enter key
+      document.getElementById("active")?.click();
+    }
   };
+  useEffect(() => {
+    const parentElement = document.getElementById("parentDiv");
+    const activeElement = document.getElementById(`active`);
+    if (parentElement && activeElement) {
+      parentElement.scrollTop = activeElement.offsetTop - 85;
+    }
+  }, [active]);
+  useEffect(() => {
+    setActive(-1);
+  }, [chips.length, isFocued]);
 
   const handleChipClick = (item: IUserData) => {
     // Convert an item to a chip
@@ -69,7 +95,6 @@ function App() {
       id: Date.now(),
       ...item,
     };
-
     setChips([...chips, newChip]);
     setInputValue("");
     setTimeout(() => {
@@ -124,11 +149,16 @@ function App() {
           className="input"
         />
         {isFocued && clickedIn && (
-          <div className="dropdown" style={{ top: `${(top || 0) + 8}px` }}>
-            {filteredItems.map((item) => (
+          <div
+            className="dropdown"
+            style={{ top: `${(top || 0) + 8}px` }}
+            id="parentDiv"
+          >
+            {filteredItems.map((item, idx) => (
               <DropDownChipCompont
                 key={item.id}
                 className="dropdown-item"
+                id={(idx === active && "active") || ""}
                 onClick={() => handleChipClick(item)}
                 leftText={item.name}
                 rightText={item.email}

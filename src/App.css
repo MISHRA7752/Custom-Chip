@@ -53,3 +53,7 @@
   padding: 8px;
   cursor: pointer;
 }
+
+#active{
+  background-color: lightgray;
+}

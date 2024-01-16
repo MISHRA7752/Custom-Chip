@@ -24,12 +24,13 @@ interface IDropDownChipCompontProps {
   imageUrl: string;
   onClick: () => void;
   className: string;
+  id: string;
 }
 
 export default function DropDownChipCompont(props: IDropDownChipCompontProps) {
-  const { onClick, leftText, rightText, imageUrl } = props;
+  const { onClick, leftText, rightText, imageUrl, id } = props;
   return (
-    <Chip onClick={onClick}>
+    <Chip onClick={onClick} id={id}>
       <ProfilePic src={imageUrl} />
       <div style={{ whiteSpace: "nowrap", fontWeight: "800" }}>{leftText}</div>
       <div>{rightText}</div>
